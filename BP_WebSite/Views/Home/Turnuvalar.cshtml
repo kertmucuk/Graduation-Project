@@ -1,0 +1,51 @@
+﻿@using BP_WebSite.Models
+@model List<Turnuva>
+@{
+    ViewBag.Title = "Turnuvalarım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-heading" style="margin-top:32px;">Turnuvalarım</h3>
+
+<div class="adapt_area" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div style="width: 100%;">
+                <div class="adapt_about">
+                    <div class="row align-items-center">
+                        <div class="single_adapt text-center" style="width: 100%;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Turnuva Adı</th>
+                                        <th scope="col">Turnuva Türü</th>
+                                        <th scope="col">Takım Sayısı</th>
+                                        <th scope="col">Düzenle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+
+                                    @foreach (Turnuva t in Model)
+                                    {
+                                        <tr>
+                                            <th scope="row">@i</th>
+                                            <td>@t.turnuvaAdi</td>
+                                            <td>@t.turnuvaCesidi.ToUpper()</td>
+                                            <td>@t.Takim.Count</td>
+                                            <td><a href="Yonet/@t.turnuvaId"><i class="fa fa-pencil" style="color: black;"></i></a></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

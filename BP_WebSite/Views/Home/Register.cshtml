@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-heading" style="margin-top:32px;">Kayıt Ol</h3>
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+{
+<div class="adapt_area" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div style="width: 100%;">
+                <div class="adapt_about">
+                    <div class="row align-items-center">
+                        <div class="single_adapt text-center" style="width: 100%;">
+                            <div> @ViewBag.LoginError</div>
+                            <form>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                    <input type="text" name="kullaniciadi" placeholder="Kullanıcı Adı" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Kullanıcı Adı'" required="" class="single-input">
+                                </div>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-key" aria-hidden="true"></i></div>
+                                    <input type="password" name="sifre1" placeholder="Şifre" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Şifre'" required="" class="single-input">
+                                </div>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-key" aria-hidden="true"></i></div>
+                                    <input type="password" name="sifre2" placeholder="Tekrar Şifre" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tekrar Şifre'" required="" class="single-input">
+                                </div>
+                                <input type="submit" class="genric-btn danger circle mt-10 single-input" value='Kayıt Ol' data-toggle="tooltip" data-placement="top" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

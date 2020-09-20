@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BP_DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="kullaniciId" />
+          </Key>
+          <Property Name="kullaniciId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kullaniciAdi" Type="varchar" MaxLength="50" />
+          <Property Name="sifre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="matchId" />
+          </Key>
+          <Property Name="matchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roundId" Type="int" />
+          <Property Name="takimID1" Type="int" />
+          <Property Name="takimID2" Type="int" />
+          <Property Name="skor1" Type="int" />
+          <Property Name="skor2" Type="int" />
+          <Property Name="grupAdi" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Round">
+          <Key>
+            <PropertyRef Name="roundId" />
+          </Key>
+          <Property Name="roundId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="turnuvaId" Type="int" />
+          <Property Name="roundAdi" Type="varchar" MaxLength="50" />
+          <Property Name="roundCesidi" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Takim">
+          <Key>
+            <PropertyRef Name="takimId" />
+          </Key>
+          <Property Name="takimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="turnuvaId" Type="int" />
+          <Property Name="takimAdi" Type="varchar" MaxLength="50" />
+          <Property Name="pts" Type="int" Nullable="false" />
+          <Property Name="avg" Type="int" Nullable="false" />
+          <Property Name="grupAdi" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Turnuva">
+          <Key>
+            <PropertyRef Name="turnuvaId" />
+          </Key>
+          <Property Name="turnuvaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kullaniciId" Type="int" />
+          <Property Name="turnuvaAdi" Type="nvarchar" MaxLength="50" />
+          <Property Name="turnuvaCesidi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Match_ToTable_Round">
+          <End Role="Round" Type="Self.Round" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Round">
+              <PropertyRef Name="roundId" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="roundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Round_ToTable_Turnuva">
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="0..1" />
+          <End Role="Round" Type="Self.Round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuva">
+              <PropertyRef Name="turnuvaId" />
+            </Principal>
+            <Dependent Role="Round">
+              <PropertyRef Name="turnuvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Takim_ToTable_Turnuva">
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="0..1" />
+          <End Role="Takim" Type="Self.Takim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuva">
+              <PropertyRef Name="turnuvaId" />
+            </Principal>
+            <Dependent Role="Takim">
+              <PropertyRef Name="turnuvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Turnuva_ToTable">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="0..1" />
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="kullaniciId" />
+            </Principal>
+            <Dependent Role="Turnuva">
+              <PropertyRef Name="kullaniciId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BP_DatabaseModelStoreContainer">
+          <EntitySet Name="Kullanici" EntityType="Self.Kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Match" EntityType="Self.Match" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Round" EntityType="Self.Round" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Takim" EntityType="Self.Takim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turnuva" EntityType="Self.Turnuva" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Match_ToTable_Round" Association="Self.FK_Match_ToTable_Round">
+            <End Role="Round" EntitySet="Round" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Round_ToTable_Turnuva" Association="Self.FK_Round_ToTable_Turnuva">
+            <End Role="Turnuva" EntitySet="Turnuva" />
+            <End Role="Round" EntitySet="Round" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Takim_ToTable_Turnuva" Association="Self.FK_Takim_ToTable_Turnuva">
+            <End Role="Turnuva" EntitySet="Turnuva" />
+            <End Role="Takim" EntitySet="Takim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Turnuva_ToTable" Association="Self.FK_Turnuva_ToTable">
+            <End Role="Kullanici" EntitySet="Kullanici" />
+            <End Role="Turnuva" EntitySet="Turnuva" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BP_DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="kullaniciId" />
+          </Key>
+          <Property Name="kullaniciId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Turnuva" Relationship="Self.FK_Turnuva_ToTable" FromRole="Kullanici" ToRole="Turnuva" />
+        </EntityType>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="matchId" />
+          </Key>
+          <Property Name="matchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roundId" Type="Int32" />
+          <Property Name="takimID1" Type="Int32" />
+          <Property Name="takimID2" Type="Int32" />
+          <Property Name="skor1" Type="Int32" />
+          <Property Name="skor2" Type="Int32" />
+          <Property Name="grupAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Round" Relationship="Self.FK_Match_ToTable_Round" FromRole="Match" ToRole="Round" />
+        </EntityType>
+        <EntityType Name="Round">
+          <Key>
+            <PropertyRef Name="roundId" />
+          </Key>
+          <Property Name="roundId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="turnuvaId" Type="Int32" />
+          <Property Name="roundAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="roundCesidi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Match" Relationship="Self.FK_Match_ToTable_Round" FromRole="Round" ToRole="Match" />
+          <NavigationProperty Name="Turnuva" Relationship="Self.FK_Round_ToTable_Turnuva" FromRole="Round" ToRole="Turnuva" />
+        </EntityType>
+        <EntityType Name="Takim">
+          <Key>
+            <PropertyRef Name="takimId" />
+          </Key>
+          <Property Name="takimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="turnuvaId" Type="Int32" />
+          <Property Name="takimAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pts" Type="Int32" Nullable="false" />
+          <Property Name="avg" Type="Int32" Nullable="false" />
+          <Property Name="grupAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Turnuva" Relationship="Self.FK_Takim_ToTable_Turnuva" FromRole="Takim" ToRole="Turnuva" />
+        </EntityType>
+        <EntityType Name="Turnuva">
+          <Key>
+            <PropertyRef Name="turnuvaId" />
+          </Key>
+          <Property Name="turnuvaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullaniciId" Type="Int32" />
+          <Property Name="turnuvaAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="turnuvaCesidi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Kullanici" Relationship="Self.FK_Turnuva_ToTable" FromRole="Turnuva" ToRole="Kullanici" />
+          <NavigationProperty Name="Round" Relationship="Self.FK_Round_ToTable_Turnuva" FromRole="Turnuva" ToRole="Round" />
+          <NavigationProperty Name="Takim" Relationship="Self.FK_Takim_ToTable_Turnuva" FromRole="Turnuva" ToRole="Takim" />
+        </EntityType>
+        <Association Name="FK_Turnuva_ToTable">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="0..1" />
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="kullaniciId" />
+            </Principal>
+            <Dependent Role="Turnuva">
+              <PropertyRef Name="kullaniciId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Match_ToTable_Round">
+          <End Role="Round" Type="Self.Round" Multiplicity="0..1" />
+          <End Role="Match" Type="Self.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Round">
+              <PropertyRef Name="roundId" />
+            </Principal>
+            <Dependent Role="Match">
+              <PropertyRef Name="roundId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Round_ToTable_Turnuva">
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="0..1" />
+          <End Role="Round" Type="Self.Round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuva">
+              <PropertyRef Name="turnuvaId" />
+            </Principal>
+            <Dependent Role="Round">
+              <PropertyRef Name="turnuvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Takim_ToTable_Turnuva">
+          <End Role="Turnuva" Type="Self.Turnuva" Multiplicity="0..1" />
+          <End Role="Takim" Type="Self.Takim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuva">
+              <PropertyRef Name="turnuvaId" />
+            </Principal>
+            <Dependent Role="Takim">
+              <PropertyRef Name="turnuvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BP_DatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kullanici" EntityType="Self.Kullanici" />
+          <EntitySet Name="Match" EntityType="Self.Match" />
+          <EntitySet Name="Round" EntityType="Self.Round" />
+          <EntitySet Name="Takim" EntityType="Self.Takim" />
+          <EntitySet Name="Turnuva" EntityType="Self.Turnuva" />
+          <AssociationSet Name="FK_Turnuva_ToTable" Association="Self.FK_Turnuva_ToTable">
+            <End Role="Kullanici" EntitySet="Kullanici" />
+            <End Role="Turnuva" EntitySet="Turnuva" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Match_ToTable_Round" Association="Self.FK_Match_ToTable_Round">
+            <End Role="Round" EntitySet="Round" />
+            <End Role="Match" EntitySet="Match" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Round_ToTable_Turnuva" Association="Self.FK_Round_ToTable_Turnuva">
+            <End Role="Turnuva" EntitySet="Turnuva" />
+            <End Role="Round" EntitySet="Round" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Takim_ToTable_Turnuva" Association="Self.FK_Takim_ToTable_Turnuva">
+            <End Role="Turnuva" EntitySet="Turnuva" />
+            <End Role="Takim" EntitySet="Takim" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BP_DatabaseModelStoreContainer" CdmEntityContainer="BP_DatabaseEntities">
+          <EntitySetMapping Name="Kullanici">
+            <EntityTypeMapping TypeName="BP_DatabaseModel.Kullanici">
+              <MappingFragment StoreEntitySet="Kullanici">
+                <ScalarProperty Name="kullaniciId" ColumnName="kullaniciId" />
+                <ScalarProperty Name="kullaniciAdi" ColumnName="kullaniciAdi" />
+                <ScalarProperty Name="sifre" ColumnName="sifre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Match">
+            <EntityTypeMapping TypeName="BP_DatabaseModel.Match">
+              <MappingFragment StoreEntitySet="Match">
+                <ScalarProperty Name="matchId" ColumnName="matchId" />
+                <ScalarProperty Name="roundId" ColumnName="roundId" />
+                <ScalarProperty Name="takimID1" ColumnName="takimID1" />
+                <ScalarProperty Name="takimID2" ColumnName="takimID2" />
+                <ScalarProperty Name="skor1" ColumnName="skor1" />
+                <ScalarProperty Name="skor2" ColumnName="skor2" />
+                <ScalarProperty Name="grupAdi" ColumnName="grupAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Round">
+            <EntityTypeMapping TypeName="BP_DatabaseModel.Round">
+              <MappingFragment StoreEntitySet="Round">
+                <ScalarProperty Name="roundId" ColumnName="roundId" />
+                <ScalarProperty Name="turnuvaId" ColumnName="turnuvaId" />
+                <ScalarProperty Name="roundAdi" ColumnName="roundAdi" />
+                <ScalarProperty Name="roundCesidi" ColumnName="roundCesidi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Takim">
+            <EntityTypeMapping TypeName="BP_DatabaseModel.Takim">
+              <MappingFragment StoreEntitySet="Takim">
+                <ScalarProperty Name="takimId" ColumnName="takimId" />
+                <ScalarProperty Name="turnuvaId" ColumnName="turnuvaId" />
+                <ScalarProperty Name="takimAdi" ColumnName="takimAdi" />
+                <ScalarProperty Name="pts" ColumnName="pts" />
+                <ScalarProperty Name="avg" ColumnName="avg" />
+                <ScalarProperty Name="grupAdi" ColumnName="grupAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turnuva">
+            <EntityTypeMapping TypeName="BP_DatabaseModel.Turnuva">
+              <MappingFragment StoreEntitySet="Turnuva">
+                <ScalarProperty Name="turnuvaId" ColumnName="turnuvaId" />
+                <ScalarProperty Name="kullaniciId" ColumnName="kullaniciId" />
+                <ScalarProperty Name="turnuvaAdi" ColumnName="turnuvaAdi" />
+                <ScalarProperty Name="turnuvaCesidi" ColumnName="turnuvaCesidi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

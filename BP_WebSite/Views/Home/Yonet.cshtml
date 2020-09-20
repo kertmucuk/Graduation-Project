@@ -1,0 +1,684 @@
+﻿@using BP_WebSite.Models
+@using BP_WebSite.Controllers
+
+@{
+    ViewBag.Title = "Yonet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<Round>
+
+<h3 class="text-heading" style="margin-top:32px;">Turnuva Adı : "@ViewBag.turnuvaadi"</h3>
+<div class="adapt_area" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div style="width: 100%;">
+                <div class="adapt_about">
+                    <div class="row align-items-center">
+                        <div class="single_adapt text-center" style="width: 100%;">
+                            @if (ViewBag.turnuva_cesidi == "eleme")
+                            {
+                                <div class="bracket">
+                                    @using (Html.BeginForm("Kaydet_Eleme", "Home", FormMethod.Post))
+                                    {
+                                        BP_DatabaseEntities db = new BP_DatabaseEntities();
+                                        foreach (Round r in Model)
+                                        {
+                                            ICollection<Match> match = r.Match;
+                                            List<Match> matches = new List<Match>();
+                                            foreach (Match m in match)
+                                            {
+                                                matches.Add(m);
+                                            }
+
+                                            var sectionClass = "";
+
+                                            switch (r.roundAdi)
+                                            {
+                                                case "1. Round":
+                                                    sectionClass = "round round1";
+                                                    break;
+
+                                                case "2. Round":
+                                                    sectionClass = "round round2";
+                                                    break;
+
+                                                case "3. Round":
+                                                    sectionClass = "round round3";
+                                                    break;
+
+                                                case "4. Round":
+                                                    sectionClass = "round round4";
+                                                    break;
+
+                                                default:
+                                                    sectionClass = "round round1";
+                                                    break;
+                                            }
+
+                                            <section class="@sectionClass">
+
+                                                @for (int k = 0; k < matches.Count - 1; k += 2)
+                                                {
+                                                    <div class="winners">
+                                                        <div class="matchups">
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[k].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k].takimID1).takimAdi</span>
+                                                                        }
+
+
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[k].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k].takimID2).takimAdi</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[k + 1].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k + 1].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k+1].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k + 1].takimID1).takimAdi</span>
+                                                                        }
+
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[k + 1].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k + 1].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k+1].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k + 1].takimID2).takimAdi</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="connector">
+                                                            <div class="merger"></div>
+                                                            <div class="line"></div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                                @if (matches.Count == 1)
+                                                {
+                                                    <div class="winners">
+                                                        <div class="matchups">
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[0].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[0].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[0].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            if (matches[0].skor1 > matches[0].skor2)
+                                                                            {
+                                                                                <span><i class="fa fa-trophy"></i> @db.Takim.Find(matches[0].takimID1).takimAdi</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@db.Takim.Find(matches[0].takimID1).takimAdi</span>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[0].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[0].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[0].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            if (matches[0].skor2 > matches[0].skor1)
+                                                                            {
+                                                                                <span><i class="fa fa-trophy"></i> @db.Takim.Find(matches[0].takimID2).takimAdi</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@db.Takim.Find(matches[0].takimID2).takimAdi</span>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </section>
+                                        }
+                                        <input type="hidden" name="id" value="@ViewBag.turnuvaid">
+                                        <button type="submit" class="btn-default" value="Kaydet" onclick='sendPost(this.form);' hidden>Kaydet</button>
+                                    }
+
+                                </div>
+
+                            }
+
+                            else if (ViewBag.turnuva_cesidi == "lig")
+                            {
+                                <h2 class="text-heading" style="margin-top:32px;">"@ViewBag.turnuvaadi" Puan Durumu</h2>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Takım Adı</th>
+                                            <th scope="col">PTS</th>
+                                            <th scope="col">AVG</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ BP_DatabaseEntities12 tdb = new BP_DatabaseEntities12();
+                                            Turnuva turnuva = tdb.Turnuva.Find(ViewBag.turnuvaid);
+                                            tdb.Entry(turnuva).Collection(x => x.Takim).Load();
+                                            ICollection<Takim> takimlar = turnuva.Takim;
+                                            var takimOrder = takimlar.OrderByDescending(x => x.pts).ThenByDescending(x => x.avg).GroupBy(x => x.grupAdi);
+                                            int i = 1, k = 1;
+                                            foreach (var g in takimOrder)
+                                            {
+                                                i = 1;
+                                                foreach (Takim t in g)
+                                                {
+                                                    if (t.turnuvaId == turnuva.turnuvaId)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@i</th>
+                                                            @if (i == 1)
+                                                            {
+                                                                <td><i class="fa fa-trophy"></i> @t.takimAdi</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>@t.takimAdi</td>
+                                                            }
+                                                            <td>@t.pts</td>
+                                                            <td>@t.avg</td>
+                                                            <td>@t.grupAdi</td>
+                                                        </tr>
+                                                    }
+                                                    i++;
+                                                    k++;
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                <hr style="border-top: 3px solid rgb(0, 0, 0);" /><br />
+                                <select name="haftalar" onchange="HaftayiGoster(this, @k);">
+                                    @for (int j = 1; j <= i - 2; j++)
+                                    {
+                                        var roundadi = j + ". Round";
+                                        <option value="@roundadi">Hafta @j</option>
+                                    }
+                                </select>
+                                /* <input type="submit" id="fiksbuton" value="Fikstürü Göster" class="genric-btn success circle mt-10" data-toggle="tooltip" data-placement="top" onclick='FiksturGoster(@k);'>*/
+
+                                bool flag = false;
+
+                                using (Html.BeginForm("Kaydet_Lig", "Home", FormMethod.Post))
+                                {
+                                    BP_DatabaseEntities12 db = new BP_DatabaseEntities12();
+                                    <br />
+                                    foreach (Round r in Model)
+                                    {
+                                        ICollection<Match> match = r.Match;
+                                        List<Match> matches = new List<Match>();
+                                        <br />
+                                        var hangiround = r.roundAdi;
+                                        <table id="@hangiround" class="col-md-3 table-hover" style="border-style: dashed; justify-content: center; display: inline-block;">
+                                            <tr><td style="height:10px;"></td></tr>
+                                            <tr><td colspan="6" style="border-style: outset; background-color: forestgreen; color: white;">Hafta @hangiround.Substring(0, hangiround.IndexOf("."))</td></tr>
+                                            <tr><td style="height:10px;"></td></tr>
+                                            @foreach (Match m in match)
+                                            {
+                                                matches.Add(m);
+                                            }
+                                            @foreach (Match m in matches)
+                                            {
+
+                                                <tr>
+                                                    <td><label name="grup1">@m.grupAdi </label></td>
+                                                    <td><label name="grup1">@db.Takim.Find(m.takimID1).takimAdi </label></td>
+                                                    <td><input type="text" value="@m.skor1" name="values" style="width: 48px; text-align:center;" /></td>
+                                                    <td><label> vs </label></td>
+                                                    <td><input type="text" value="@m.skor2" name="values" style="width: 48px; text-align:center;" /></td>
+                                                    <td><label name="grup2">@db.Takim.Find(m.takimID2).takimAdi</label></td>
+                                                    <td>
+                                                        <input type="hidden" name="values" value="@m.matchId" />
+                                                        <input type="hidden" name="id" value="@ViewBag.turnuvaid">
+                                                    </td>
+                                                </tr>
+                                                if (m.skor1 == null || m.skor2 == null)
+                                                {
+                                                    flag = true;
+                                                }
+                                                <tr><td style="height:10px;"></td></tr>
+                                            }
+                                            <tr><td style="height:10px;"></td></tr>
+                                        </table>
+                                    }
+                                    <br />
+                                    <input type="submit" value="Kaydet" class="genric-btn success circle mt-10" data-toggle="tooltip" data-placement="top" onclick='sendPost(this.form);'>
+                                }
+
+                                <script>
+                                    var onceki = "1. Round";
+
+                                    document.getElementById(onceki).style.display = "inline-block";
+
+                                    function FiksturGoster(kactakim) {
+                                        if (document.getElementById("fiksbuton").value == "Fikstürü Göster") {
+                                            for (var i = 1; i <= kactakim - 2; i++) {
+                                                document.getElementById(i + ". Round").style.display = "inline-block";
+                                                document.getElementById("fiksbuton").value = "Fikstürü Gizle";
+                                            }
+                                        }
+                                        else {
+                                            for (var i = 1; i <= kactakim - 2; i++) {
+                                                document.getElementById(i + ". Round").style.display = "none";
+                                                document.getElementById("fiksbuton").value = "Fikstürü Göster";
+                                                document.getElementById(onceki).style.display = "inline-block";
+                                            }
+                                        }
+                                    }
+
+                                    function HaftayiGoster(select, takim) {
+                                        var i = 1;
+                                        if (select.value != "") {
+                                            for (i = 1; i <= takim - 2; i++) {
+                                                document.getElementById(i + ". Round").style.display = "none";
+                                            }
+                                        }
+
+                                        if (onceki != select.value) {
+                                            document.getElementById(select.value).style.display = "inline-block";
+                                            document.getElementById(onceki).style.display = "none";
+                                        }
+                                        onceki = select.value;
+                                    }
+                                </script>
+
+                                if (!flag)
+                                {
+                                    using (Html.BeginForm("ElemeyeGonder", "Home", FormMethod.Post))
+                                    {
+                                        <br />
+                                        <hr style="border-top: 3px solid rgb(0, 0, 0);" />
+                                        <input type="hidden" name="id" value="@ViewBag.turnuvaid">
+                                        <input type="number" max="@takimlar.Count" min="2" name="takim_sayisi" placeholder="Takım Sayısı" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Takım Sayısı'" required="" style="width: 128px;">
+                                        <input type="submit" class="genric-btn success circle mt-10" value="Elemeye Gönder" onclick='sendPost(this.form);' data-toggle="tooltip" data-placement="top">
+                                    }
+                                }
+                            }
+
+
+                            else if (ViewBag.turnuva_cesidi == "lig-eleme")
+                            {
+                                <h2 class="text-heading" style="margin-top:32px;">"@ViewBag.turnuvaadi" Puan Durumu</h2>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Takım Adı</th>
+                                            <th scope="col">PTS</th>
+                                            <th scope="col">AVG</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ BP_DatabaseEntities12 tdb = new BP_DatabaseEntities12();
+                                            Turnuva turnuva = tdb.Turnuva.Find(ViewBag.turnuvaid);
+                                            tdb.Entry(turnuva).Collection(x => x.Takim).Load();
+                                            ICollection<Takim> takimlar = turnuva.Takim;
+                                            var takimOrder = takimlar.OrderByDescending(x => x.pts).ThenByDescending(x => x.avg);
+
+                                            int i = 1;
+                                            foreach (Takim t in takimOrder)
+                                            {
+                                                if (t.turnuvaId == turnuva.turnuvaId)
+                                                {
+                                                    <tr>
+                                                        <th scope="row">@i</th>
+                                                        <td>@t.takimAdi</td>
+                                                        <td>@t.pts</td>
+                                                        <td>@t.avg</td>
+                                                    </tr>
+                                                }
+                                                i++;
+                                            } }
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h2 class="text-heading" style="margin-top:32px;">"@ViewBag.turnuvaadi" Eleme Durumu</h2>
+                                <div class="bracket">
+
+                                    @using (Html.BeginForm("Kaydet_Eleme", "Home", FormMethod.Post))
+                                    {
+                                        BP_DatabaseEntities12 db = new BP_DatabaseEntities12();
+                                        foreach (Round r in Model)
+                                        {
+                                            ICollection<Match> match = r.Match;
+                                            List<Match> matches = new List<Match>();
+                                            foreach (Match m in match)
+                                            {
+                                                matches.Add(m);
+                                            }
+
+                                            var sectionClass = "";
+
+                                            switch (r.roundAdi)
+                                            {
+                                                case "1. Round":
+                                                    sectionClass = "round round1";
+                                                    break;
+
+                                                case "2. Round":
+                                                    sectionClass = "round round2";
+                                                    break;
+
+                                                case "3. Round":
+                                                    sectionClass = "round round3";
+                                                    break;
+
+                                                case "4. Round":
+                                                    sectionClass = "round round4";
+                                                    break;
+
+                                                default:
+                                                    sectionClass = "round round1";
+                                                    break;
+                                            }
+
+                                            <section class="@sectionClass">
+
+                                                @for (int k = 0; k < matches.Count - 1; k += 2)
+                                                {
+                                                    <div class="winners">
+                                                        <div class="matchups">
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[k].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k].takimID1).takimAdi</span>
+                                                                        }
+
+
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[k].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k].takimID2).takimAdi</span>
+                                                                        }
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[k + 1].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k + 1].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k+1].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k + 1].takimID1).takimAdi</span>
+                                                                        }
+
+
+
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[k + 1].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[k + 1].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[k+1].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            <span>@db.Takim.Find(matches[k + 1].takimID2).takimAdi</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="connector">
+                                                            <div class="merger"></div>
+                                                            <div class="line"></div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                                @if (matches.Count == 1)
+                                                {
+                                                    <div class="winners">
+                                                        <div class="matchups">
+                                                            <div class="matchup">
+                                                                <div class="participants">
+                                                                    <div class="participant" style="text-align: left;">
+                                                                        @if (matches[0].takimID1 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[0].takimID2 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[0].skor1">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            if (matches[0].skor1 > matches[0].skor2)
+                                                                            {
+                                                                                <span><i class="fa fa-trophy"></i> @db.Takim.Find(matches[0].takimID1).takimAdi</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@db.Takim.Find(matches[0].takimID1).takimAdi</span>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                    <div class="participant" style="text-align: left; background-color: rgb(208, 208, 208);">
+                                                                        @if (matches[0].takimID2 == null)
+                                                                        {
+                                                                            <input type="hidden" name="values" value="" />
+                                                                            if (r.roundAdi == "1. Round")
+                                                                            { <span>BYE</span> }
+                                                                            else
+                                                                            { <span>TBD</span> }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (matches[0].takimID1 != null)
+                                                                            {
+                                                                                <input type="text" style="height:32px;width: 32px;font-size: medium; margin-left: 5px; text-align: center; border-color: #fff;" name="values" value="@matches[0].skor2">
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <input type="hidden" name="values" value="" />
+                                                                            }
+                                                                            if (matches[0].skor2 > matches[0].skor1)
+                                                                            {
+                                                                                <span><i class="fa fa-trophy"></i> @db.Takim.Find(matches[0].takimID2).takimAdi</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@db.Takim.Find(matches[0].takimID2).takimAdi</span>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </section>
+                                        }
+                                        <input type="hidden" name="id" value="@ViewBag.turnuvaid">
+                                        <button type="submit" class="btn-default" value="Kaydet" onclick='sendPost(this.form);' hidden>Kaydet</button>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

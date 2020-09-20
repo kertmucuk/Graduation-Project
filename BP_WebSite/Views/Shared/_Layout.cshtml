@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Online Turnuva Çizelgesi Düzenleme Aracı</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/fontawesome")
+</head>
+<body>
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-3">
+                            <div class="logo">
+                                <h3><a href="/">Online Turnuva Çizelgesi Düzenleme Aracı</a></h3>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-9">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li>@Html.ActionLink("Turnuva", "Index", "Home")</li>
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            <li>@Html.ActionLink("Eleme Modu", "Eleme", "Home")</li>
+                                            <li>@Html.ActionLink("Lig Modu", "Lig", "Home")</li>
+                                            <li>@Html.ActionLink("Turnuvalar", "Turnuvalar", "Home")</li>
+                                            <li>@Html.ActionLink("Çıkış Yap", "Logout", "Home")</li>
+                                        }
+                                        else
+                                        {
+                                            <li>@Html.ActionLink("Giriş Yap", "Login", "Home")</li>
+                                            <li>@Html.ActionLink("Kayıt Ol", "Register", "Home")</li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Online Turnuva Çizelgesi Düzenleme Aracı</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

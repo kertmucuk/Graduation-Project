@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Eleme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-heading" style="margin-top:32px;">Eleme Modu</h3>
+
+@using (Html.BeginForm("ElemeKura", "Home", FormMethod.Post))
+{
+<div class="adapt_area" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div style="width: 100%;">
+                <div class="adapt_about">
+                    <div class="row align-items-center">
+                        <div class="single_adapt text-center" style="width: 100%;">
+                            <div class="row">
+                                <div class="col-md-12" id="adim1">
+                                    <div class="single-defination">
+                                        <form>
+                                            <div class="input-group-icon mt-10">
+                                                <div class="icon"><i class="fa fa-trophy" aria-hidden="true"></i></div>
+                                                <input type="text" name="elements" placeholder="Turnuva Adı" id="tourName" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Turnuva Adı'" class="single-input" required>
+                                            </div>
+                                            <div class="input-group-icon mt-10">
+                                                <div class="icon"><i class="fa fa-users" aria-hidden="true"></i></div>
+                                                <input type="number" name="participantNum" id="participantNum" placeholder="Takım Sayısı" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Takım Sayısı'" class="single-input" required>
+                                            </div>
+                                            <input type="button" id="katilimcieklebtn" value="Oluştur" onclick="refreshRows(this.form);" class="genric-btn success circle mt-10 single-input" data-toggle="tooltip" data-placement="top">
+                                        </form>
+
+                                        <script type="text/javascript">
+                                            function refreshRows() {
+                                                var i = 0;
+                                                var count = document.getElementById("participantNum").value;
+                                                for (i = 0; i < count; i++) {
+                                                    var node = document.createElement("li");
+                                                    var input = document.createElement("input");
+                                                    input.className = "single-input";
+                                                    input.name = "elements";
+                                                    input.value = (i + 1) + ".takim";
+                                                    var br = document.createElement("br");
+                                                    node.appendChild(input);
+                                                    document.getElementById("partRows").appendChild(node);
+                                                    document.getElementById("kuraCekBtn").style.display = "";
+                                                    document.getElementById("katilimcieklebtn").style.display = "none";
+                                                    document.getElementById("adim1").style.display = "none";
+                                                    document.getElementById("adim2").style.display = "block";
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="adim2" style="display: none;">
+                                    <div class="single-defination">
+                                        <div class='form-group' id='partRows' style='padding-left: 18%;'>
+                                        </div>
+                                        <form id="partRows">
+                                            <input type="text" name="partRowsId" id="partRowsId" value="" class="single-input" hidden>
+                                            <input name='drawingOption' type='hidden' value='quick' id='drawingOption'>
+                                        </form>
+                                        <div class='form-group' id='kuraCekBtn' style='display: none;'>
+                                            <input type='submit' id='butongonder' class='genric-btn success circle mt-10' value='Kura Çek' data-toggle='tooltip' data-placement='top' />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
